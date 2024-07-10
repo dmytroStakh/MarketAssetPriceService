@@ -20,6 +20,7 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__DefaultConnection=Host=db;Database=MarketDB;Username=postgres;Password=password
 
   ef:

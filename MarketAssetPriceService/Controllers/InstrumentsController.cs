@@ -1,50 +1,64 @@
-﻿using MarketAssetPriceService.Enteties;
-using MarketAssetPriceService.Repositories.Impl;
+﻿using MarketAssetPriceService.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace MarketAssetPriceService.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class InstrumentsController : ControllerBase
     {
-        private readonly MarketDataContext _context;
+        private readonly IInstrumentService _instrumentService;
 
-        public InstrumentsController(MarketDataContext context)
+        public InstrumentsController(IInstrumentService instrumentService)
         {
-            _context = context;
+            _instrumentService = instrumentService;
         }
 
-        // GET: api/Instruments
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Instrument>>> GetInstruments()
+        [HttpGet("v1/instruments")]
+        public async Task<IActionResult> GetInstruments([FromQuery] string provider = "oanda", [FromQuery] string kind = "forex")
         {
-            return await _context.Instruments.ToListAsync();
-        }
-
-        // POST: api/Instruments
-        [HttpPost]
-        public async Task<ActionResult<Instrument>> PostInstrument(Instrument instrument)
-        {
-            _context.Instruments.Add(instrument);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetInstrument), new { id = instrument.Id }, instrument);
-        }
-
-        // GET: api/Instruments/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Instrument>> GetInstrument(int id)
-        {
-            var instrument = await _context.Instruments.FindAsync(id);
-
-            if (instrument == null)
+            if (string.IsNullOrEmpty(provider) || string.IsNullOrEmpty(kind))
             {
-                return NotFound();
+                return BadRequest("Provider and kind are required.");
             }
 
-            return instrument;
+            try
+            {
+                var result = await _instrumentService.GetInstrumentsAsync(provider, kind);
+                return Ok(result);
+            }
+            catch (HttpRequestException e)
+            {
+                return StatusCode((int)e.StatusCode, e.Message);
+            }
+        }
+
+        [HttpGet("v1/providers")]
+        public async Task<IActionResult> GetProviders()
+        {
+            try
+            {
+                var result = await _instrumentService.GetProvidersAsync();
+                return Ok(result);
+            }
+            catch (HttpRequestException e)
+            {
+                return StatusCode((int)e.StatusCode, e.Message);
+            }
+        }
+
+        [HttpGet("v1/exchanges")]
+        public async Task<IActionResult> GetExchanges()
+        {
+            try
+            {
+                var result = await _instrumentService.GetExchangesAsync();
+                return Ok(result);
+            }
+            catch (HttpRequestException e)
+            {
+                return StatusCode((int)e.StatusCode, e.Message);
+            }
         }
     }
 }
