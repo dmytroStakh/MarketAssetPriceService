@@ -20,7 +20,7 @@ if (string.IsNullOrEmpty(connectionString))
 }
 
 builder.Services.AddDbContext<MarketDataContext>(options =>
-    options.UseNpgsql(connectionString));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register AuthService with the provided credentials
 builder.Services.AddSingleton<IAuthService>(new AuthService(
@@ -41,6 +41,7 @@ builder.Services.AddScoped<IWebSocketService>(provider =>
 builder.Services.AddScoped<IInstrumentService, InstrumentService>();
 builder.Services.AddScoped<IBarsService, BarsService>();
 builder.Services.AddScoped<IMarketDataService, MarketDataService>();
+builder.Services.AddScoped<IMarketInstrumentService, MarketInstrumentService>();
 
 builder.Services.AddCors(options =>
 {
