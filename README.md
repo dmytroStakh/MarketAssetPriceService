@@ -15,8 +15,9 @@ git clone https://github.com/your-username/MarketAssetPriceService.git
 cd MarketAssetPriceService
 
 ### 2.Run the Application
+```
 docker-compose up --build
-
+```
 ### 3.Accessing the Application
 Once the application is running, you can access the Swagger UI at:
 http://localhost:5000/swagger/index.html
