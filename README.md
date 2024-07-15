@@ -11,7 +11,6 @@ MarketAssetPriceService is a web application for retrieving and managing market 
 ## Setup Instructions
 
 ### 1. Clone the Repository
-```sh
 git clone https://github.com/your-username/MarketAssetPriceService.git
 cd MarketAssetPriceService
 
@@ -21,3 +20,4 @@ docker-compose up --build
 ### 3.Accessing the Application
 Once the application is running, you can access the Swagger UI at:
 http://localhost:5000/swagger/index.html
+```sh
