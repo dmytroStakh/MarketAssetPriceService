@@ -61,36 +61,4 @@ public class MarketInstrumentService : IMarketInstrumentService
 
         await _context.SaveChangesAsync();
     }
-
-    public class InstrumentResponse
-    {
-        public Paging Paging { get; set; }
-        public List<InstrumentData> Data { get; set; }
-    }
-
-    public class Paging
-    {
-        public int Page { get; set; }
-        public int Pages { get; set; }
-        public int Items { get; set; }
-    }
-
-    public class InstrumentData
-    {
-        public Guid Id { get; set; }
-        public string Symbol { get; set; }
-        public string Kind { get; set; }
-        public string Description { get; set; }
-        public decimal TickSize { get; set; }
-        public string Currency { get; set; }
-        public string BaseCurrency { get; set; }
-        public Dictionary<string, Mapping> Mappings { get; set; }
-    }
-
-    public class Mapping
-    {
-        public string Symbol { get; set; }
-        public string Exchange { get; set; }
-        public int DefaultOrderSize { get; set; }
-    }
 }

@@ -20,6 +20,9 @@ services:
       - db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - AUTH_TOKEN_URL=https://platform.fintacharts.com/identity/realms/fintatech/protocol/openid-connect/token
+      - AUTH_USERNAME=r_test@fintatech.com
+      - AUTH_PASSWORD=kisfiz-vUnvy9-sopnyv
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__DefaultConnection=Host=db;Database=MarketDB;Username=postgres;Password=password
 

@@ -23,10 +23,12 @@ builder.Services.AddDbContext<MarketDataContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register AuthService with the provided credentials
-builder.Services.AddSingleton<IAuthService>(new AuthService(
-    "https://platform.fintacharts.com/identity/realms/fintatech/protocol/openid-connect/token",
-    "r_test@fintatech.com",
-    "kisfiz-vUnvy9-sopnyv"));
+var tokenUrl = Environment.GetEnvironmentVariable("AUTH_TOKEN_URL");
+var username = Environment.GetEnvironmentVariable("AUTH_USERNAME");
+var password = Environment.GetEnvironmentVariable("AUTH_PASSWORD");
+
+// Register AuthService as a singleton
+builder.Services.AddSingleton<IAuthService>(new AuthService(tokenUrl, username, password));
 
 // Register WebSocketService with the token and logger
 builder.Services.AddScoped<IWebSocketService>(provider =>
